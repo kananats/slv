@@ -33,7 +33,6 @@ public class Form : MonoBehaviour
 
             levelField.text = level.ToString();
             percentageField.text = percentage.ToString();
-
         }
     }
 
@@ -48,14 +47,11 @@ public class Form : MonoBehaviour
         {
             _percentage = value;
 
-            if (_percentage > 99)
-            {
-                _percentage = 99;
-            }
-            else if (_percentage < 0)
-            {
+            if (level == 15 || _percentage < 0)
                 _percentage = 0;
-            }
+
+            else if (_percentage > 99)
+                _percentage = 99;
 
             levelField.text = level.ToString();
             percentageField.text = percentage.ToString();
@@ -71,8 +67,6 @@ public class Form : MonoBehaviour
 
             this.level = level;
             this.percentage = percentage;
-
-            Controller.instance.Calculate();
         }
 
         catch (System.Exception)
@@ -80,5 +74,7 @@ public class Form : MonoBehaviour
             levelField.text = level.ToString();
             percentageField.text = percentage.ToString();
         }
+
+        Controller.instance.Calculate();
     }
 }
