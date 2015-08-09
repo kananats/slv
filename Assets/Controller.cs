@@ -8,12 +8,11 @@ public class Controller : MonoBehaviour
     private static string KEY_CURRENT_LEVEL = "CurrentLevel";
     private static string KEY_CURRENT_PERCENTAGE = "CurrentPercentage";
     private static string KEY_TARGET_LEVEL = "TargetLevel";
-    private static string KEY_TARGET_PERCENTAGE = "TargetPercentage";
 
     public int[] accumulatedRounds;
 
-    public Form current;
-    public Form target;
+    public CurrentSkillLevel currentSkillLevel;
+    public TargetSkillLevel targetSkillLevel;
     public InputField result;
 
     void Start()
@@ -27,8 +26,8 @@ public class Controller : MonoBehaviour
 
     public void Calculate()
     {
-        int currentRound = SkillLevelToRound(current.level, current.percentage);
-        int targetRound = SkillLevelToRound(target.level, target.percentage);
+        int currentRound = SkillLevelToRound(currentSkillLevel.level, currentSkillLevel.percentage);
+        int targetRound = SkillLevelToRound(targetSkillLevel.level);
 
         int diff = targetRound - currentRound;
 
@@ -40,7 +39,7 @@ public class Controller : MonoBehaviour
         Save();
     }
 
-    private int SkillLevelToRound(int level, int percentage)
+    private int SkillLevelToRound(int level, int percentage = 0)
     {
         return (int)(accumulatedRounds[level - 1] + percentage * 0.01f * (accumulatedRounds[level] - accumulatedRounds[level - 1]));
     }
@@ -56,22 +55,17 @@ public class Controller : MonoBehaviour
         if (!PlayerPrefs.HasKey(KEY_TARGET_LEVEL))
             PlayerPrefs.SetInt(KEY_TARGET_LEVEL, 10);
 
-        if (!PlayerPrefs.HasKey(KEY_TARGET_PERCENTAGE))
-            PlayerPrefs.SetInt(KEY_TARGET_PERCENTAGE, 0);
+        currentSkillLevel.level = PlayerPrefs.GetInt(KEY_CURRENT_LEVEL);
+        currentSkillLevel.percentage = PlayerPrefs.GetInt(KEY_CURRENT_PERCENTAGE);
 
-        current.level = PlayerPrefs.GetInt(KEY_CURRENT_LEVEL);
-        current.percentage = PlayerPrefs.GetInt(KEY_CURRENT_PERCENTAGE);
-
-        target.level = PlayerPrefs.GetInt(KEY_TARGET_LEVEL);
-        target.percentage = PlayerPrefs.GetInt(KEY_TARGET_PERCENTAGE);
+        targetSkillLevel.level = PlayerPrefs.GetInt(KEY_TARGET_LEVEL);
     }
 
     private void Save()
     {
-        PlayerPrefs.SetInt(KEY_CURRENT_LEVEL, current.level);
-        PlayerPrefs.SetInt(KEY_CURRENT_PERCENTAGE, current.percentage);
+        PlayerPrefs.SetInt(KEY_CURRENT_LEVEL, currentSkillLevel.level);
+        PlayerPrefs.SetInt(KEY_CURRENT_PERCENTAGE, currentSkillLevel.percentage);
 
-        PlayerPrefs.SetInt(KEY_TARGET_LEVEL, target.level);
-        PlayerPrefs.SetInt(KEY_TARGET_PERCENTAGE, target.percentage);
+        PlayerPrefs.SetInt(KEY_TARGET_LEVEL, targetSkillLevel.level);
     }
 }

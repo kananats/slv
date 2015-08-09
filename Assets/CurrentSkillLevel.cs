@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Form : MonoBehaviour
+public class CurrentSkillLevel : TargetSkillLevel
 {
-    public InputField levelField;
     public InputField percentageField;
 
-    private int _level;
-    private int _percentage;
+    protected int _percentage;
 
-    public int level
+    public override int level
     {
         get
         {
@@ -58,7 +56,7 @@ public class Form : MonoBehaviour
         }
     }
 
-    public void EV_EndEdit()
+    public override void EV_EndEdit()
     {
         try
         {
